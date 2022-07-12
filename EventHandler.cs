@@ -10,10 +10,6 @@ namespace CoinGranageEXILED
         public void OnFlippingCoin(FlippingCoinEventArgs ev) 
         {
             ev.Player.ThrowGrenade(GrenadeType.FragGrenade, true);
-
         }
-
-        public Plugin plugin;
-        private Config Config;
     }
 }
