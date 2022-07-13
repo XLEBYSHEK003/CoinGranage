@@ -1,44 +1,44 @@
 ﻿using System;
 using Exiled.API.Features;
-using Exiled.Events;
+using Exiled.CustomItems.API;
 
-namespace CoinGranageEXILED
+namespace MagicCoin
 {
-    internal class Plugin : Plugin<Config>
-    {
-        public override string Prefix { get; } = "CoinGranage";
-        public override string Name { get; } = "CoinGranage";
-        public override string Author { get; } = "XLEBYSHEK";
-        public override Version Version { get; } = new Version(1, 0, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(5, 2, 2);
 
-        internal readonly EventHandler EventHandler = new EventHandler();
-        internal readonly Plugin Instance;
-        public Plugin()
-        {
-            Instance = this;
-        }
+	public class Plugin : Plugin<Config>
+	{
 
-        public override void OnEnabled()
-        {
-            Log.Info(string.Format("Plugin {0} ({1}) by {2} enabled sucessfully!", Name, Version, Author));
-            RegisterEvents();
-        }
+		public override string Name { get; } = "MagicCoin";
 
-        public override void OnDisabled()
-        {
-            Log.Info(string.Format("Plugin {0} ({1}) by {2} disabled sucessfully!!", Name, Version, Author));
-            UnregisterEvents();
-        }
+		public override string Prefix { get; } = "MagicCoin";
 
-        public void RegisterEvents()
-        {
-            Exiled.Events.Handlers.Player.FlippingCoin += EventHandler.OnFlippingCoin;
-        }
+		public override string Author { get; } = "XLEB_YSHEK";
 
-        public void UnregisterEvents()
-        {
-            Exiled.Events.Handlers.Player.FlippingCoin -= EventHandler.OnFlippingCoin;
-        }
-    }
+		public override Version Version { get; } = new Version(1, 2, 0);
+
+		public override Version RequiredExiledVersion { get; } = new Version(5, 2, 2);
+
+		public override void OnEnabled()
+		{
+			Plugin.Singleton = this;
+			Log.Info("MagicCoin Loaded, new Item!!");
+			base.OnEnabled();
+			this.NukaCola();
+		}
+
+		public override void OnDisabled()
+		{
+			Plugin.Singleton = null;
+			base.OnDisabled();
+		}
+
+		public void NukaCola()
+		{
+			magiccoin = new MagicCoin { Type = ItemType.Coin };
+			Extensions.Register(this.magiccoin);
+		}
+
+		public static Plugin Singleton;
+		public MagicCoin magiccoin;
+	}
 }
